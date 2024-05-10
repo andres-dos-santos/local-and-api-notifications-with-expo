@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "local-and-api-notifications-with-expo",
-    "slug": "local-and-api-notifications-with-expo",
+    "slug": "local-and-api-notification",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,6 +22,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8cf2e885-eedd-40a5-9b86-7c584c39d742"
+      }
+    },
+    "owner": "andresdossantos"
   }
 }
