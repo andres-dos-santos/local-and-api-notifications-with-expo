@@ -14,7 +14,15 @@ Notifications.setNotificationHandler({
 const PROJECT_ID = Constants.expoConfig?.extra?.eas.projectId;
 
 export default function App() {
+  const handleRequestPermission = async () => {
+    const data = await Notifications.requestPermissionsAsync();
+
+    console.log(data)
+  }
+
   const handleCallNotifications = async () => {
+    // handleRequestPermission()
+
     const { status } = await Notifications.getPermissionsAsync();
 
     if (status !== "granted") {
