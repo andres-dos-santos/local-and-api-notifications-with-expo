@@ -1,60 +1,37 @@
 import { StatusBar } from "expo-status-bar";
-import { Alert, Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
+import { useState } from "react";
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
+import { notification } from "./utils/notification";
 
 const PROJECT_ID = Constants.expoConfig?.extra?.eas.projectId;
 
+type Info = {
+  status?: string;
+  token?: string;
+  PROJECT_ID?: string;
+};
+
 export default function App() {
-  const handleRequestPermission = async () => {
-    const data = await Notifications.requestPermissionsAsync();
+  const [info, setInfo] = useState<Info | null>(null);
 
-    console.log(data);
-  };
+  const handle = async () => {
+    const status = await notification.onRequestPermission();
 
-  const handleCallNotifications = async () => {
-    // handleRequestPermission()
+    const token = await notification.onGetExpoToken();
 
-    const { status } = await Notifications.getPermissionsAsync();
+    setInfo({ status, token, PROJECT_ID });
 
-    if (status !== "granted") {
-      Alert.alert("Without permissions.");
-
-      return;
-    }
-
-    /** await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Hello.",
-        body: "Notification is here!",
-      },
-      trigger: {
-        seconds: 5,
-      },
-    }); */
-
-    const token = await Notifications.getExpoPushTokenAsync({
-      projectId: PROJECT_ID,
-    });
-
-    console.log(token);
+    await notification.onSendLocalNotification();
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        Open up App.tsx to start working on your app!
-      </Text>
+      <Text style={styles.title}>{JSON.stringify(info, null, 2)}</Text>
 
-      <Button title="Notificar" onPress={handleCallNotifications} />
+      <Button title="Pegar informação e notificar" onPress={handle} />
 
       <StatusBar style="light" />
     </View>
