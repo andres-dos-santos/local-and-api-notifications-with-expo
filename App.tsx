@@ -17,8 +17,8 @@ export default function App() {
   const handleRequestPermission = async () => {
     const data = await Notifications.requestPermissionsAsync();
 
-    console.log(data)
-  }
+    console.log(data);
+  };
 
   const handleCallNotifications = async () => {
     // handleRequestPermission()
